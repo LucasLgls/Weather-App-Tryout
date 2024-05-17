@@ -1,20 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .weather-report { margin-top: 20px; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Weather App</h1>
-        <div class="location-input">
-            <input type="text" id="location" placeholder="Enter your location">
-            <button onclick="getWeather()">Get Weather</button>
+    <h1>Weather Forecast</h1>
+    <form action="/weather" method="post">
+        Enter your city: <input type="text" name="city">
+        <button type="submit">Get Forecast</button>
+    </form>
+
+    {% if error_msg %}
+        <p>Error: {{ error_msg }}</p>
+    {% endif %}
+
+    {% if forecast_data %}
+        <div class="weather-report">
+            {% for item in forecast_data %}
+                <div>
+                    <h2>{{ item.date }}</h2>
+                    <p>Temp: {{ item.temperature }}°C</p>
+                    <p>Description: {{ item.description }}</p>
+                    <img src="http://openweathermap.org/img/w/{{ item.icon }}.png">
+                </div>
+            {% endfor %}
         </div>
-        <div id="weather-container" class="weather-container"></div>
-    </div>
-    <script src="script.js"></script>
+    {% endif %}
 </body>
 </html>
